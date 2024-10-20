@@ -1,11 +1,12 @@
 <project name="Lab4Jenkins" default="test" basedir=".">
     
     <property name="src.dir" value="."/>  <!-- Вказуємо, що вихідні файли знаходяться в кореневій папці проекту -->
+    <property name="test.results.dir" value="test-results"/>  <!-- Додаємо каталог для звітів -->
 
     <target name="test">
+        <mkdir dir="${test.results.dir}"/>  <!-- Створюємо каталог для звітів -->
         <exec executable="python3">
             <arg value="${src.dir}/test_4_lab2.py"/> <!-- Шлях до тестового файлу -->
         </exec>
     </target>
-
 </project>
