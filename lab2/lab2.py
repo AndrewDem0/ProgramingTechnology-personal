@@ -13,7 +13,7 @@ class Order:
     def __repr__(self):
         return f"Order({self.order_id}, {self.customer_name}, {self.order_amount})"
 
-#Виняток для порожньої черги замовлень"
+#Виняток для порожньої черги замовлень  "
 class EmptyQueueException(Exception):
     pass
 
