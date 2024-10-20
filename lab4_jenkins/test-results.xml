@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+	<testsuite name="TestOrderQueue-20241020184409" tests="7" file=".py" time="0.003" timestamp="2024-10-20T18:44:09" failures="0" errors="0" skipped="1">
+		<testcase classname="TestOrderQueue" name="test_add_order" time="0.001" timestamp="2024-10-20T18:44:09" file="lab4_jenkins\test_4_lab2.py" line="9">
+			<system-out><![CDATA[Замовлення Order(1, Alice, 100) додано до черги.
+Кількість замовлень у черзі: 1
+]]></system-out>
+		</testcase>
+		<testcase classname="TestOrderQueue" name="test_count_orders" time="0.000" timestamp="2024-10-20T18:44:09" file="lab4_jenkins\test_4_lab2.py" line="56">
+			<system-out><![CDATA[Замовлення Order(1, Alice, 100) додано до черги.
+Замовлення Order(2, Bob, 250) додано до черги.
+Кількість замовлень у черзі: 2
+]]></system-out>
+		</testcase>
+		<testcase classname="TestOrderQueue" name="test_peek_highest_priority_order" time="0.001" timestamp="2024-10-20T18:44:09" file="lab4_jenkins\test_4_lab2.py" line="45">
+			<system-out><![CDATA[Замовлення Order(1, Alice, 100) додано до черги.
+Замовлення Order(2, Bob, 250) додано до черги.
+Замовлення з найвищим пріоритетом: Order(2, Bob, 250)
+]]></system-out>
+		</testcase>
+		<testcase classname="TestOrderQueue" name="test_process_order" time="0.001" timestamp="2024-10-20T18:44:09" file="lab4_jenkins\test_4_lab2.py" line="17">
+			<system-out><![CDATA[Замовлення Order(1, Alice, 100) додано до черги.
+Замовлення Order(2, Bob, 250) додано до черги.
+Замовлення Order(2, Bob, 250) оброблено.
+Кількість замовлень у черзі: 1
+]]></system-out>
+		</testcase>
+		<testcase classname="TestOrderQueue" name="test_view_all_orders_empty_queue" time="0.000" timestamp="2024-10-20T18:44:09" file="lab4_jenkins\test_4_lab2.py" line="29"/>
+		<testcase classname="TestOrderQueue" name="test_view_all_orders_with_orders" time="0.000" timestamp="2024-10-20T18:44:09" file="lab4_jenkins\test_4_lab2.py" line="36">
+			<system-out><![CDATA[Замовлення Order(1, Alice, 100) додано до черги.
+Замовлення Order(2, Bob, 250) додано до черги.
+]]></system-out>
+		</testcase>
+		<testcase classname="TestOrderQueue" name="test_process_order_empty_queue" time="0.000" timestamp="2024-10-20T18:44:09" file="lab4_jenkins\test_4_lab2.py" line="66">
+			<skipped type="XFAIL" message="expected failure: (&lt;class 'AssertionError'&gt;, AssertionError(&quot;'Не None' is not None&quot;), &lt;traceback object at 0x000001B797562100&gt;)"/>
+			<system-out><![CDATA[Черга замовлень порожня.
+]]></system-out>
+		</testcase>
+	</testsuite>
+</testsuites>

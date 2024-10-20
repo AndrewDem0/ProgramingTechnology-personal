@@ -1,3 +1,4 @@
+import os
 import unittest
 import xmlrunner
 from lab2 import Order, OrderQueue, EmptyQueueException
@@ -71,6 +72,10 @@ class TestOrderQueue(unittest.TestCase):
         self.assertIsNone(processed_order)
 
 if __name__ == '__main__':
-    # Використовуємо xmlrunner для виводу в певний каталог
-    with open('test-results.xml', 'wb') as output:
+    # Отримуємо директорію для збереження звіту
+    results_dir = 'lab4_jenkins'  # Змінюємо шлях до test-results
+    os.makedirs(results_dir, exist_ok=True)  # Створюємо папку, якщо вона не існує
+
+    # Використовуємо xmlrunner для виводу в вказану директорію
+    with open(os.path.join(results_dir, 'test-results.xml'), 'wb') as output:
         unittest.main(testRunner=xmlrunner.XMLTestRunner(output=output), verbosity=2)
