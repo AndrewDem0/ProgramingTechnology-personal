@@ -3,9 +3,9 @@
     <property name="test.results.dir" value="${src.dir}"/>
 
     <target name="test">
-        <mkdir dir="${test.results.dir}"/>  <!-- Створення директорії для тестів, якщо її ще немає -->
+        <mkdir dir="${test.results.dir}"/>  <!-- Створення директорії для тестів, якщо її ще не існує -->
         <exec executable="python">
-            <arg line="${src.dir}/test_4_lab2.py"/>
+            <arg line="${src.dir}/test_4_lab2.py"/>  <!-- Правильний шлях до файлу -->
         </exec>
     </target>
 
