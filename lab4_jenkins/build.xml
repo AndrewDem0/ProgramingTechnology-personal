@@ -1,0 +1,11 @@
+<project name="Lab4Jenkins" default="test" basedir=".">
+    
+    <property name="src.dir" value="."/>  <!-- Вказуємо, що вихідні файли знаходяться в кореневій папці проекту -->
+
+    <target name="test">
+        <exec executable="python">
+            <arg value="${src.dir}/test_4_lab2.py"/> <!-- Шлях до тестового файлу -->
+        </exec>
+    </target>
+
+</project>
