@@ -1,19 +1,13 @@
-<project name="Lab_4_0" default="test" basedir=".">
-    <property name="src.dir" value="lab4_jenkins"/>
-    <property name="test.results.dir" value="${src.dir}"/>
-
+<project name="Lab_4" default="test" basedir=".">
+    <property name="python" value="python"/> <!-- Вказуємо, де знаходиться Python -->
+    
     <target name="test">
-        <mkdir dir="${test.results.dir}"/>  <!-- Створення директорії для тестів, якщо її ще не існує -->
-        <exec executable="python">
-            <arg line="${src.dir}/test_4_lab2.py"/>  <!-- Правильний шлях до файлу -->
+        <mkdir dir="lab4_jenkins"/> <!-- Створення папки для звітів, якщо потрібно -->
+        
+        <exec executable="${python}">
+            <arg value="lab4_jenkins/test_4_lab2.py"/> <!-- Вказуємо правильний шлях -->
+            <arg value="--report-dir"/> <!-- Додаємо аргумент для звіту -->
+            <arg value="lab4_jenkins/test-results.xml"/> <!-- Шлях для звіту -->
         </exec>
-    </target>
-
-    <target name="report" depends="test">
-        <junit printsummary="yes" haltonfailure="false">
-            <fileset dir="${test.results.dir}">
-                <include name="test-results.xml"/> <!-- Звіт про тести -->
-            </fileset>
-        </junit>
     </target>
 </project>
