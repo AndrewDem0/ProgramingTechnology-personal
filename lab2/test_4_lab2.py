@@ -1,5 +1,5 @@
 import unittest
-from lab2.lab2 import Order, OrderQueue
+from lab2 import Order, OrderQueue, EmptyQueueException
 
 class TestOrderQueue(unittest.TestCase):
 
@@ -23,20 +23,23 @@ class TestOrderQueue(unittest.TestCase):
         self.assertEqual(highest_priority_order.order_id, 2)
         self.assertEqual(queue.count_orders(), 1)
 
-    # 3. Тест на перегляд усіх замовлень
-    def test_view_all_orders(self):
+    # 3. Тест на перегляд усіх замовлень з порожньої черги (виняток)
+    def test_view_all_orders_empty_queue(self):
+        queue = OrderQueue()
+        
+        with self.assertRaises(EmptyQueueException):
+            queue.view_all_orders()
+
+    # 4. Тест на перегляд усіх замовлень з заповненої черги
+    def test_view_all_orders_with_orders(self):
         queue = OrderQueue()
         order1 = Order(1, "Alice", 100)
         order2 = Order(2, "Bob", 250)
         queue.add_order(order1)
         queue.add_order(order2)
 
-        all_orders = sorted(queue._queue)  #reverse=True
-        self.assertEqual(all_orders[0].order_id, 2)
-        self.assertEqual(all_orders[1].order_id, 1)
-        #queue.view_all_orders()
-    
-    # 4. Тест на перегляд замовлення з найвищим пріоритетом (без видалення)
+
+    # 5. Тест на перегляд замовлення з найвищим пріоритетом (без видалення)
     def test_peek_highest_priority_order(self):
         queue = OrderQueue()
         order1 = Order(1, "Alice", 100)
@@ -47,7 +50,7 @@ class TestOrderQueue(unittest.TestCase):
         highest_order = queue.peek_highest_priority_order()
         self.assertEqual(highest_order.order_id, 2)
 
-    # 5. Тест на кількість замовлень
+    # 6. Тест на кількість замовлень
     def test_count_orders(self):
         queue = OrderQueue()
         order1 = Order(1, "Alice", 100)

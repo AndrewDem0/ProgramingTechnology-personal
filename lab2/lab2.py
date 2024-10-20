@@ -13,6 +13,9 @@ class Order:
     def __repr__(self):
         return f"Order({self.order_id}, {self.customer_name}, {self.order_amount})"
 
+#Виняток для порожньої черги замовлень"
+class EmptyQueueException(Exception):
+    pass
 
 # Клас для управління чергою замовлень
 class OrderQueue:
@@ -36,12 +39,12 @@ class OrderQueue:
 
     # 3. Перегляд усіх замовлень у черзі
     def view_all_orders(self):
-        if self._queue:
-            print("Усі замовлення в черзі:")
-            for order in sorted(self._queue):
-                print(order)
-        else:
-            print("Черга порожня.")
+        if not self._queue:
+            raise EmptyQueueException("Черга порожня!")
+        
+        print("Усі замовлення в черзі:")
+        for order in sorted(self._queue):
+            print(order)
 
     # 4. Перегляд замовлення з найвищим пріоритетом (але без видалення)
     def peek_highest_priority_order(self):
