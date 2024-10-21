@@ -61,7 +61,7 @@ class TestOrderQueue(unittest.TestCase):
         queue.add_order(order1)
         queue.add_order(order2)
 
-        self.assertEqual(queue.count_orders(), 2)
+        self.assertEqual(queue.count_orders(), 28)
 
     # Негативний тест на обробку порожньої черги (повинен повернути None)
     @unittest.expectedFailure
