@@ -7,7 +7,7 @@
         <exec executable="${python}">
             <arg value="test_4_lab2.py"/> <!-- Вказуємо правильний шлях -->
             <arg value="--report-dir"/> <!-- Додаємо аргумент для звіту -->
-            <arg value="lab4_jenkins/test-results.xml"/> <!-- Шлях для звіту -->
+            <arg value="test-results.xml"/> <!-- Шлях для звіту -->
         </exec>
     </target>
 </project>
