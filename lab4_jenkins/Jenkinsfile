@@ -6,7 +6,9 @@ pipeline {
         stage('Check scm') {
             agent any
             steps {
-                checkout scm  // Завантажуємо код з репозиторію
+                sshagent (credentials: ['jenkins-git-key']) {  // Використання SSH ключа
+                    checkout scm  // Завантажуємо код з репозиторію
+                }
             }
         }
 
@@ -28,10 +30,10 @@ pipeline {
             steps {
                 // Встановлюємо pip і залежності
                 sh 'apk add --no-cache py3-pip'
-                sh 'pip install xmlrunner'
+                sh 'pip install xmlrunner'  // Встановлюємо xmlrunner для звітів
 
                 // Запускаємо тести
-                sh 'python3 -m unittest discover -s . -p "*_test.py"'
+                sh 'python3 -m unittest discover -s . -p "*_test.py"'  // Знайти та запустити всі тести
             }
 
             post {
