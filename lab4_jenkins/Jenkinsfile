@@ -1,44 +1,53 @@
 pipeline {
-    options { timestamps() }
+    options { timestamps() }  // Додаємо час до логів для зручності
     agent none
+
     stages {
         stage('Check scm') {
             agent any
             steps {
-                checkout scm
+                checkout scm  // Завантажуємо код з репозиторію
             }
-        } 
+        }
+
         stage('Build') {
             steps {
-                echo "Building ...${BUILD_NUMBER}"
-                echo "Build completed"
+                echo "Building ...${BUILD_NUMBER}"  // Номер збірки
+                echo "Build completed"  // Підтвердження завершення збірки
             }
-        } 
+        }
+
         stage('Test') {
             agent { 
                 docker { 
-                    image 'python:3.12-alpine' 
-                    // Замість Windows-шляху вказуємо Unix-подібний шлях
+                    image 'python:3.12-alpine'  // Використовуємо контейнер з Python 3.12
+                    args '-u="root"'  // Запуск від імені root для встановлення залежностей
                 } 
             }
-            steps {
-                sh 'apk add --no-cache py3-pip'
-                sh 'pip install unittest-xml-reporting'
 
-                // Використовуємо Unix-подібний шлях до файлу
-                sh 'python /c/ProgramData/Jenkins/.jenkins/workspace/dcvrv/lab4_jenkins/test_4_lab2.py' 
+            steps {
+                // Встановлюємо pip і залежності
+                sh 'apk add --no-cache py3-pip'
+                sh 'pip install xmlrunner'
+
+                // Запускаємо тести
+                sh 'python3 -m unittest discover -s . -p "*_test.py"'
             }
+
             post {
                 always {
-                    junit 'lab4_jenkins/test-reports.xml'
+                    // Завжди архівуємо результати тестів у форматі JUnit
+                    junit 'lab4_jenkins/test-results.xml'
                 }
+
                 success {
-                    echo "Application testing successfully completed"
+                    echo "Application testing successfully completed"  // Якщо тести пройшли успішно
                 }
+
                 failure {
-                    echo "Oooppss!!! Tests failed!"
+                    echo "Oooppss!!! Tests failed!"  // Якщо тести провалились
                 }
             }
         }
-    } 
+    }
 }
