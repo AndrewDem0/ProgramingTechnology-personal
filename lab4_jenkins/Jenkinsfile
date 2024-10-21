@@ -19,7 +19,6 @@ pipeline {
                 docker { 
                     image 'python:3.12-alpine' 
                     // Замість Windows-шляху вказуємо Unix-подібний шлях
-                    args '-u="root" -w "/c/ProgramData/Jenkins/.jenkins/workspace/dcvrv/"'
                 } 
             }
             steps {
