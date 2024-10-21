@@ -18,7 +18,7 @@ pipeline {
             agent { 
                 docker { 
                     image 'python:3.12-alpine' 
-                    args '-u="root"'
+                    args '-u="root" -w "/c/ProgramData/Jenkins/.jenkins/workspace/dcvrv/"'
                 } 
             }
             steps {
