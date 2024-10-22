@@ -1,56 +1,59 @@
 pipeline {
-    options { timestamps() }  // Add timestamps to the logs
-    agent none
-    tools {
-        dockerTool 'docker'  // Use Docker, configured in Jenkins Tools
+    agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Змінна для облікових даних Docker Hub
+        DOCKER_IMAGE_NAME = "your_dockerhub_username/order_queue_app" // Замініть на ваше ім'я користувача
     }
 
     stages {
-        stage('Check scm') {
-            agent any
+        stage('Checkout') {
             steps {
-                checkout scm  // Checkout the code from SCM
+                // Клонуємо репозиторій
+                git 'https://your-repository-url'
             }
         }
 
         stage('Build') {
             steps {
-                echo "Building ...${BUILD_NUMBER}"  // Build number
-                echo "Build completed"  // Build completion confirmation
+                // Встановлюємо залежності (якщо є requirements.txt) та збираємо програму
+                sh 'pip install -r requirements.txt || true'
             }
         }
 
         stage('Test') {
-            agent { 
-                docker { 
-                    image 'python:3.12-alpine'  // Use Python 3.12 container
-                    args '-u root -w /workspace/Lab_4_2'  // Unix-style working directory path
-                } 
-            }
-
             steps {
-                // Install pip and dependencies
-                sh 'apk add --no-cache py3-pip'
-                sh 'pip install xmlrunner'
-
-                // Run the tests
-                sh 'python3 -m unittest discover -s . -p "*_test.py"'
+                // Запускаємо тести
+                sh 'python3 -m unittest discover -s .'
             }
+        }
 
-            post {
-                always {
-                    // Archive the test results in JUnit format
-                    junit 'lab4_jenkins/test-results.xml'
-                }
-
-                success {
-                    echo "Application testing successfully completed"  // If tests pass
-                }
-
-                failure {
-                    echo "Oooppss!!! Tests failed!"  // If tests fail
+        stage('Build Docker Image') {
+            steps {
+                // Створюємо Docker образ
+                script {
+                    docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
                 }
             }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_CREDENTIALS') {
+                        docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Build, Test, and Docker Push were successful!"
+        }
+        failure {
+            echo "Build, Test, or Docker Push failed."
         }
     }
 }
