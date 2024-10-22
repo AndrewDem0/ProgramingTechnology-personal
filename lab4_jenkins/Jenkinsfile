@@ -1,6 +1,9 @@
 pipeline {
     options { timestamps() }  // Додаємо час до логів для зручності
     agent none
+    tools {
+        dockerTool 'docker'  // Використовуємо Docker, налаштований в Jenkins через 'Tools'
+    }
 
     stages {
         stage('Check scm') {
@@ -21,7 +24,7 @@ pipeline {
             agent { 
                 docker { 
                     image 'python:3.12-alpine'  // Використовуємо контейнер з Python 3.12
-                    args '-u="root"'  // Запуск від імені root для встановлення залежностей
+                    args '-u root -w /workspace/Lab_4_2'  // Запуск від імені root для встановлення залежностей
                 } 
             }
 
