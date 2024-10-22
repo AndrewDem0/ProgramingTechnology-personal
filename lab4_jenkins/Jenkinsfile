@@ -3,28 +3,27 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('DOCKERHUB_CREDENTIALS') // Змінна для облікових даних Docker Hub
-        DOCKER_IMAGE_NAME = "andrew43/order_queue_app" // Замініть на ваше ім'я користувача
+        DOCKER_IMAGE_NAME = "andrew43/order_queue_app" // Ваше ім'я користувача
     }
 
     stages {
         stage('Checkout') {
             steps {
                 // Клонуємо репозиторій
-                git 'https://github.com/AndrewDem0/ProgramingTechnology-personal/blob/main/lab4_jenkins'
+                git 'https://github.com/AndrewDem0/ProgramingTechnology-personal.git'
             }
         }
 
-        stage('Build') {
+        stage('Build and Test') {
             steps {
-                // Встановлюємо залежності (якщо є requirements.txt) та збираємо програму
-                sh 'pip install -r requirements.txt || true'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                // Запускаємо тести
-                sh 'python3 -m unittest discover -s .'
+                // Переміщуємося в директорію, де знаходяться всі потрібні файли
+                dir('lab4_jenkins') { // Вкажіть назву папки, де ваш Dockerfile і Jenkinsfile
+                    // Встановлюємо залежності (якщо є requirements.txt)
+                    sh 'pip install -r requirements.txt || true'
+                    
+                    // Запускаємо тести
+                    sh 'python3 -m unittest discover -s .'
+                }
             }
         }
 
@@ -32,7 +31,9 @@ pipeline {
             steps {
                 // Створюємо Docker образ
                 script {
-                    docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    dir('lab4_jenkins') { // Повертаємося в директорію з Dockerfile
+                        docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    }
                 }
             }
         }
@@ -40,8 +41,10 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_CREDENTIALS') {
-                        docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
+                    dir('lab4_jenkins') { // Повертаємося в директорію з Dockerfile
+                        docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_CREDENTIALS') {
+                            docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
+                        }
                     }
                 }
             }
