@@ -9,16 +9,16 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Клонуємо репозиторій
-                git 'https://github.com/AndrewDem0/ProgramingTechnology-personal.git'
+                // Використовуємо автоматичну перевірку SCM
+                checkout scm
             }
         }
 
         stage('Build and Test') {
             steps {
                 // Переміщуємося в директорію, де знаходяться всі потрібні файли
-                dir('lab4_jenkins') { // Вкажіть назву папки, де ваш Dockerfile і Jenkinsfile
-                    // Встановлюємо залежності (якщо є requirements.txt)
+                dir('lab4_jenkins') { 
+                    // Встановлюємо залежності
                     sh 'pip install -r requirements.txt || true'
                     
                     // Запускаємо тести
@@ -29,9 +29,9 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // Створюємо Docker образ
                 script {
-                    dir('lab4_jenkins') { // Повертаємося в директорію з Dockerfile
+                    dir('lab4_jenkins') { 
+                        // Створюємо Docker образ
                         docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
                     }
                 }
@@ -41,7 +41,8 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    dir('lab4_jenkins') { // Повертаємося в директорію з Dockerfile
+                    dir('lab4_jenkins') { 
+                        // Публікуємо Docker образ
                         docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_CREDENTIALS') {
                             docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                         }
