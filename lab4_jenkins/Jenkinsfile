@@ -1,54 +1,54 @@
 pipeline {
-    options { timestamps() }  // Додаємо час до логів для зручності
+    options { timestamps() }  // Add timestamps to the logs
     agent none
     tools {
-        dockerTool 'docker'  // Використовуємо Docker, налаштований в Jenkins через 'Tools'
+        dockerTool 'docker'  // Use Docker, configured in Jenkins Tools
     }
 
     stages {
         stage('Check scm') {
             agent any
             steps {
-                checkout scm  // Завантажуємо код з репозиторію
+                checkout scm  // Checkout the code from SCM
             }
         }
 
         stage('Build') {
             steps {
-                echo "Building ...${BUILD_NUMBER}"  // Номер збірки
-                echo "Build completed"  // Підтвердження завершення збірки
+                echo "Building ...${BUILD_NUMBER}"  // Build number
+                echo "Build completed"  // Build completion confirmation
             }
         }
 
         stage('Test') {
             agent { 
                 docker { 
-                    image 'python:3.12-alpine'  // Використовуємо контейнер з Python 3.12
-                    args '-u root -w /workspace/Lab_4_2'  // Запуск від імені root для встановлення залежностей
+                    image 'python:3.12-alpine'  // Use Python 3.12 container
+                    args '-u root -w /workspace/Lab_4_2'  // Unix-style working directory path
                 } 
             }
 
             steps {
-                // Встановлюємо pip і залежності
+                // Install pip and dependencies
                 sh 'apk add --no-cache py3-pip'
                 sh 'pip install xmlrunner'
 
-                // Запускаємо тести
+                // Run the tests
                 sh 'python3 -m unittest discover -s . -p "*_test.py"'
             }
 
             post {
                 always {
-                    // Завжди архівуємо результати тестів у форматі JUnit
+                    // Archive the test results in JUnit format
                     junit 'lab4_jenkins/test-results.xml'
                 }
 
                 success {
-                    echo "Application testing successfully completed"  // Якщо тести пройшли успішно
+                    echo "Application testing successfully completed"  // If tests pass
                 }
 
                 failure {
-                    echo "Oooppss!!! Tests failed!"  // Якщо тести провалились
+                    echo "Oooppss!!! Tests failed!"  // If tests fail
                 }
             }
         }
