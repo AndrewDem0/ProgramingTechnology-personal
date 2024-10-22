@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('DOCKERHUB_CREDENTIALS') // Змінна для облікових даних Docker Hub
-        DOCKER_IMAGE_NAME = "your_dockerhub_username/order_queue_app" // Замініть на ваше ім'я користувача
+        DOCKER_IMAGE_NAME = "andrew43/order_queue_app" // Замініть на ваше ім'я користувача
     }
 
     stages {
