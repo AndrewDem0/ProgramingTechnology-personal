@@ -19,10 +19,10 @@ pipeline {
                 // Переміщуємося в директорію, де знаходяться всі потрібні файли
                 dir('lab4_jenkins') { 
                     // Встановлюємо залежності
-                    sh 'pip install -r requirements.txt || true'
+                    bat 'pip install -r requirements.txt || exit 0'
                     
                     // Запускаємо тести
-                    sh 'python3 -m unittest discover -s .'
+                    bat 'python -m unittest discover -s .'
                 }
             }
         }
