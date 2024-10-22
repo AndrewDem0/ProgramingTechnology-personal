@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Клонуємо репозиторій
-                git 'https://your-repository-url'
+                git 'https://github.com/AndrewDem0/ProgramingTechnology-personal/blob/main/lab4_jenkins'
             }
         }
 
