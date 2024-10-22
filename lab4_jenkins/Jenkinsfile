@@ -18,9 +18,6 @@ pipeline {
             steps {
                 // Переміщуємося в директорію, де знаходяться всі потрібні файли
                 dir('lab4_jenkins') { 
-                    // Встановлюємо залежності
-                    bat 'pip install -r requirements.txt || exit 0'
-                    
                     // Запускаємо тести
                     bat 'python -m unittest discover -s .'
                 }
@@ -32,6 +29,7 @@ pipeline {
                 script {
                     dir('lab4_jenkins') { 
                         // Створюємо Docker образ
+                        bat 'docker context use default' // Перемикаємося на контекст default
                         docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
                     }
                 }
@@ -43,6 +41,7 @@ pipeline {
                 script {
                     dir('lab4_jenkins') { 
                         // Публікуємо Docker образ
+                        bat 'docker context use default' // Перемикаємося на контекст default
                         docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_CREDENTIALS') {
                             docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                         }
