@@ -56,10 +56,10 @@ class OrderQueue:
             print("Черга порожня.")
             return None
 
-    # 5. Перевірка кількості замовлень у черзі
+    # 5. Перевірка кількості замовлень у черзі 
     def count_orders(self):
         count = len(self._queue)
-        print(f"Кількість замовлень у черзі: {count}")
+        print(f"Кількість замовлень у чeрзі: {count}")
         return count
 
 
